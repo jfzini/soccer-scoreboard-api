@@ -10,9 +10,11 @@ enum StatusHTTP {
   INTERNAL_SERVER_ERROR = 500,
 }
 
+type DataResponse<T> = T | T[] | null | { message: string };
+
 interface IServiceResponse<T> {
   status: keyof typeof StatusHTTP;
-  data: T | T[] | null;
+  data: DataResponse<T>;
 }
 
 export { StatusHTTP, IServiceResponse };

@@ -11,6 +11,7 @@ class TeamsService {
 
   public async getTeamById(id: number): Promise<IServiceResponse<TeamModel>> {
     const data = await this.teamModel.findByPk(id);
+    if (!data) return { status: 'NOT_FOUND', data: { message: 'No team was found' } };
     return { status: 'SUCCESSFUL', data };
   }
 }
