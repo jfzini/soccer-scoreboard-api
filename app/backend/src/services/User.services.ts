@@ -1,7 +1,7 @@
+import * as bcrypt from 'bcryptjs';
 import Token from '../auth/Token';
 import UserModel from '../database/models/UserModel';
 import { IServiceResponse } from '../Interfaces/IServiceResponse';
-import * as bcrypt from 'bcryptjs';
 
 class UserService {
   private userModel = UserModel;
@@ -13,9 +13,11 @@ class UserService {
 
     const { password: hashedPassword, ...rest } = data;
     const isValidPassword = bcrypt.compareSync(password, data.password);
-    if (!isValidPassword) return { status: 'UNAUTHORIZED', data: { message: 'Invalid password' } };
+    if (!isValidPassword) {
+      return { status: 'UNAUTHORIZED', data: { message: 'Invalid email or password' } };
+    }
 
-    const token = this.token.generateToken(rest)
+    const token = this.token.generateToken(rest);
     return { status: 'SUCCESSFUL', data: { token } };
   }
 }
