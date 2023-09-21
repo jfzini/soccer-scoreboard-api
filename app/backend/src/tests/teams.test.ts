@@ -1,9 +1,12 @@
-import sinon from 'sinon';
-import chai, { expect } from 'chai';
+import * as sinon from 'sinon';
+import * as chai from 'chai';
+// @ts-ignore
 import chaiHttp from 'chai-http';
-import { app } from '../../app';
-import TeamModel from '../../database/models/TeamModel';
-import { allTeamsMock } from '../mocks/teams.mocks';
+import { app } from '../app';
+import TeamModel from '../database/models/TeamModel';
+import { allTeamsMock } from './mocks/teams.mocks';
+
+const { expect } = chai;
 
 chai.use(chaiHttp);
 
