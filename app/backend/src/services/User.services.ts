@@ -9,7 +9,9 @@ class UserService {
 
   public async loginUser(email: string, password: string): Promise<IServiceResponse<UserModel>> {
     const data = await this.userModel.findOne({ where: { email } });
-    if (!data) return { status: 'NOT_FOUND', data: { message: 'No user was found' } };
+    if (!data) {
+      return { status: 'UNAUTHORIZED', data: { message: 'Invalid email or password' } };
+    }
 
     const { password: hashedPassword, ...rest } = data;
     const isValidPassword = bcrypt.compareSync(password, data.password);
