@@ -12,7 +12,7 @@ enum StatusHTTP {
 
 interface IServiceResponse<T> {
   status: keyof typeof StatusHTTP;
-  data: T | T[];
+  data: T | T[] | null;
 }
 
 export { StatusHTTP, IServiceResponse };

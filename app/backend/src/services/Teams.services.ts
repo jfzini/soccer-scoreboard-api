@@ -8,6 +8,11 @@ class TeamsService {
     const data = await this.teamModel.findAll();
     return { status: 'SUCCESSFUL', data };
   }
+
+  public async getTeamById(id: number): Promise<IServiceResponse<TeamModel>> {
+    const data = await this.teamModel.findByPk(id);
+    return { status: 'SUCCESSFUL', data };
+  }
 }
 
 export default TeamsService;
