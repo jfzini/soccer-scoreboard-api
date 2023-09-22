@@ -13,8 +13,8 @@ class UserService {
       return { status: 'UNAUTHORIZED', data: { message: 'Invalid email or password' } };
     }
 
-    const { password: hashedPassword, ...rest } = data;
-    const isValidPassword = bcrypt.compareSync(password, data.password);
+    const { password: hashedPassword, ...rest } = data.dataValues;
+    const isValidPassword = bcrypt.compareSync(password, hashedPassword);
     if (!isValidPassword) {
       return { status: 'UNAUTHORIZED', data: { message: 'Invalid email or password' } };
     }

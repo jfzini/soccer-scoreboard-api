@@ -10,6 +10,11 @@ class UserController {
     const { status, data } = await this.userService.loginUser(email, password);
     return res.status(mapStatus(status)).json(data);
   }
+
+  public static getRole(req: Request, res: Response) {
+    const { role } = req.body.user;
+    return res.status(200).json({ role });
+  }
 }
 
 export default UserController;

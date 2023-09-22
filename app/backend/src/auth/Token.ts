@@ -15,6 +15,15 @@ class Token {
   public generateToken(payload: Payload): string {
     return jwt.sign(payload, this.secret, this.options);
   }
+
+  public validateToken(token: string): Payload | null {
+    try {
+      const decoded = jwt.verify(token, this.secret) as Payload;
+      return decoded;
+    } catch (error) {
+      return null;
+    }
+  }
 }
 
 export default Token;
