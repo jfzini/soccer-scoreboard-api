@@ -5,9 +5,8 @@ import {
   InferCreationAttributes,
   CreationOptional,
 } from 'sequelize';
+import Team from './TeamModel';
 import db from '.';
-// import Team from './TeamModel';
-// import OtherModel from './OtherModel';
 
 class Match extends Model<InferAttributes<Match>, InferCreationAttributes<Match>> {
   declare id: CreationOptional<number>;
@@ -55,15 +54,9 @@ Match.init(
   },
 );
 
-/**
- * `Workaround` para aplicar as associations em TS:
- * Associations 1:N devem ficar em uma das instâncias de modelo
- * */
-
-// Example.hasMany(OtherModel, { foreignKey: 'campoC', as: 'campoEstrangeiroC' });
-// Example.hasMany(OtherModel, { foreignKey: 'campoD', as: 'campoEstrangeiroD' });
-
-// Match.belongsTo(Team, { foreignKey: 'id', as: 'homeTeam' });
-// Match.belongsTo(Team, { foreignKey: 'id', as: 'awayTeam' });
+Team.hasMany(Match, { foreignKey: 'homeTeamId', as: 'homeMatch' });
+Team.hasMany(Match, { foreignKey: 'awayTeamId', as: 'awayMatch' });
+Match.belongsTo(Team, { foreignKey: 'homeTeamId', as: 'homeTeam' });
+Match.belongsTo(Team, { foreignKey: 'awayTeamId', as: 'awayTeam' });
 
 export default Match;

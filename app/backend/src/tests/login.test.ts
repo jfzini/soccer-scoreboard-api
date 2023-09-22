@@ -81,6 +81,7 @@ describe('Route /login', function () {
         'user@.com',
         'user@.',
         '@user.com',
+        'user@user.commm'
       ];
 
       const testsPromises = invalidEmails.map(async (email) => {
