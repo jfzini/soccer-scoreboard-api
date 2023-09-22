@@ -5,7 +5,8 @@ import LeaderBoardUtils from './utils/LeaderBoardUtils';
 class LeaderBoardService {
   private teamModel = TeamModel;
 
-  public async getAllHomeMatchesData(): Promise<any> {
+  // LEMBRAR DE DEIXAR A FUNÇÃO DINAMICA RECEBENDO HOME OU AWAY COMO PARAMETRO
+  public async getAllHomeMatchesData(): Promise<IServiceResponse<TeamModel>> {
     const rawData = await this.teamModel.findAll({
       include: [
         {
@@ -17,9 +18,9 @@ class LeaderBoardService {
       ],
     });
 
-    const teste = new LeaderBoardUtils(rawData[0].toJSON());
+    const parsedData = rawData.map((team) => new LeaderBoardUtils(team.toJSON()));
 
-    return { status: 'SUCCESSFUL', data: teste };
+    return { status: 'SUCCESSFUL', data: parsedData };
   }
 }
 

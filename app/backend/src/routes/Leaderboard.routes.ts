@@ -7,7 +7,6 @@ const LeaderboardRouter = express.Router();
 const leaderboardController = new LeaderboardController();
 
 LeaderboardRouter.get('/home', (req: Request, res: Response) =>
-  leaderboardController.getAllMatchesData(req, res),
-);
+  leaderboardController.getAllMatchesData(req, res));
 
 export default LeaderboardRouter;

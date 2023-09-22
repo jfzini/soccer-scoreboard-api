@@ -9,7 +9,6 @@ class LeaderboardController {
     const { status, data } = await this.leaderboardService.getAllHomeMatchesData();
     return res.status(mapStatus(status)).json(data);
   }
-
 }
 
 export default LeaderboardController;
