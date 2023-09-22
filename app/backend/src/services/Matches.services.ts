@@ -38,6 +38,18 @@ class MatchesService {
 
     return { status: 'SUCCESSFUL', data };
   }
+
+  public async endMatch(matchId: number): Promise<IServiceResponse<MatchModel>> {
+    const [insert] = await this.matchModel.update(
+      { inProgress: false },
+      { where: { id: matchId } },
+    );
+    if (!insert) {
+      return { status: 'BAD_REQUEST', data: { message: 'No matches found' } };
+    }
+
+    return { status: 'SUCCESSFUL', data: { message: 'Finished' } };
+  }
 }
 
 export default MatchesService;

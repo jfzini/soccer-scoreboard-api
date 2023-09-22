@@ -13,7 +13,7 @@ const matchesMock = [
     homeTeamGoals: 1,
     awayTeamId: 14,
     awayTeamGoals: 1,
-    inProgress: false,
+    inProgress: true,
   },
 ];
 
