@@ -69,6 +69,23 @@ class MatchesService {
 
     return { status: 'SUCCESSFUL', data: { message: 'Match goals were updated!' } };
   }
+
+  public async createMatch(
+    homeTeamId: number,
+    awayTeamId: number,
+    homeTeamGoals: number,
+    awayTeamGoals: number,
+  ): Promise<IServiceResponse<MatchModel>> {
+    const data = await this.matchModel.create({
+      homeTeamId,
+      awayTeamId,
+      homeTeamGoals,
+      awayTeamGoals,
+      inProgress: true,
+    });
+
+    return { status: 'CREATED', data };
+  }
 }
 
 export default MatchesService;

@@ -2,7 +2,7 @@ import * as express from 'express';
 import { Request, Response } from 'express';
 import MatchController from '../controllers/Matches.controllers';
 import validateToken from '../middlewares/token.middlewares';
-import validateUpdateGoalsFields from '../middlewares/match.middlewares';
+import middlewares from '../middlewares/match.middlewares';
 
 const MatchesRouter = express.Router();
 
@@ -16,8 +16,16 @@ MatchesRouter.patch('/:matchId/finish', validateToken, (req: Request, res: Respo
 MatchesRouter.patch(
   '/:matchId',
   validateToken,
-  validateUpdateGoalsFields,
+  middlewares.validateUpdateGoalsFields,
   (req: Request, res: Response) => matchesController.updateMatchGoals(req, res),
+);
+
+MatchesRouter.post(
+  '/',
+  validateToken,
+  middlewares.validateCreateMatchFields,
+  middlewares.validateUpdateGoalsFields,
+  (req: Request, res: Response) => matchesController.createMatch(req, res),
 );
 
 export default MatchesRouter;

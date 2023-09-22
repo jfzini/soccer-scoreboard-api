@@ -17,4 +17,24 @@ const validateUpdateGoalsFields = (req: Request, res: Response, next: NextFuncti
   next();
 };
 
-export default validateUpdateGoalsFields;
+const validateCreateMatchFields = (req: Request, res: Response, next: NextFunction) => {
+  const { homeTeamId, awayTeamId } = req.body;
+  if (!homeTeamId || !awayTeamId) {
+    return res.status(400).json({ message: 'Missing fields' });
+  }
+  const parsedHomeTeamId = parseInt(homeTeamId, 10);
+  const parsedAwayTeamId = parseInt(awayTeamId, 10);
+
+  if (Number.isNaN(parsedAwayTeamId) || Number.isNaN(parsedHomeTeamId)) {
+    return res.status(400).json({ message: 'Team ids must be numbers' });
+  }
+  if (homeTeamId === awayTeamId) {
+    return res.status(400).json({ message: 'Team ids must be different' });
+  }
+  if (homeTeamId < 0 || awayTeamId < 0) {
+    return res.status(400).json({ message: 'Team ids cannot be negative' });
+  }
+  next();
+};
+
+export default { validateUpdateGoalsFields, validateCreateMatchFields };
