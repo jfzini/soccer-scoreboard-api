@@ -10,12 +10,16 @@ class LeaderBoardUtils implements ILeaderboard {
   public totalLosses = 0;
   public goalsFavor = 0;
   public goalsOwn = 0;
+  public goalsBalance = 0;
+  public efficiency = "0";
 
   constructor(matchesData: TeamModel) {
     this.name = matchesData.teamName;
     this.calculateMatchesResults(matchesData);
     this.calculatePoints();
     this.calculateTotalGames();
+    this.calculateGoalsBalance();
+    this.calculateEfficiency();
   }
 
   private calculatePoints(): void {
@@ -42,6 +46,14 @@ class LeaderBoardUtils implements ILeaderboard {
       this.goalsFavor += match[`${team}TeamGoals`];
       this.goalsOwn += match[`${enemyTeam}TeamGoals`];
     });
+  }
+
+  private calculateGoalsBalance(): void {
+    this.goalsBalance = this.goalsFavor - this.goalsOwn;
+  }
+
+  private calculateEfficiency(): void {
+    this.efficiency = ((this.totalPoints / (this.totalGames * 3)) * 100).toFixed(2);
   }
 }
 

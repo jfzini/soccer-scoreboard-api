@@ -6,11 +6,11 @@ class LeaderBoardService {
   private teamModel = TeamModel;
 
   // LEMBRAR DE DEIXAR A FUNÇÃO DINAMICA RECEBENDO HOME OU AWAY COMO PARAMETRO
-  public async getAllHomeMatchesData(): Promise<IServiceResponse<TeamModel>> {
+  public async getAllHomeMatchesData(path: string): Promise<IServiceResponse<TeamModel>> {
     const rawData = await this.teamModel.findAll({
       include: [
         {
-          association: 'homeMatch',
+          association: `${path}Match`,
           where: {
             inProgress: false,
           },

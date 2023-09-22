@@ -5,8 +5,10 @@ import mapStatus from './utils/mapStatus';
 class LeaderboardController {
   private leaderboardService = new LeaderboardService();
 
-  public async getAllMatchesData(_req: Request, res: Response) {
-    const { status, data } = await this.leaderboardService.getAllHomeMatchesData();
+  public async getAllMatchesData(req: Request, res: Response) {
+    // mostra o path
+    const path = req.route.path.split('/').pop();
+    const { status, data } = await this.leaderboardService.getAllHomeMatchesData(path);
     return res.status(mapStatus(status)).json(data);
   }
 }
