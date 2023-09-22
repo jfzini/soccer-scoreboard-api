@@ -11,7 +11,7 @@ class LeaderBoardUtils implements ILeaderboard {
   public goalsFavor = 0;
   public goalsOwn = 0;
   public goalsBalance = 0;
-  public efficiency = "0";
+  public efficiency = '0';
 
   constructor(matchesData: TeamModel) {
     this.name = matchesData.teamName;
