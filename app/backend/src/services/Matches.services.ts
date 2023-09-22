@@ -50,6 +50,25 @@ class MatchesService {
 
     return { status: 'SUCCESSFUL', data: { message: 'Finished' } };
   }
+
+  public async updateMatchGoals(
+    matchId: number,
+    homeTeamGoals: number,
+    awayTeamGoals: number,
+  ): Promise<IServiceResponse<MatchModel>> {
+    const [insert] = await this.matchModel.update(
+      { homeTeamGoals, awayTeamGoals },
+      { where: { id: matchId, inProgress: true } },
+    );
+    if (!insert) {
+      return {
+        status: 'BAD_REQUEST',
+        data: { message: 'No matches found, it is already finished or the results are the same' },
+      };
+    }
+
+    return { status: 'SUCCESSFUL', data: { message: 'Match goals were updated!' } };
+  }
 }
 
 export default MatchesService;

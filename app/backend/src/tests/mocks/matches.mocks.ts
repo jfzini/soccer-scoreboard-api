@@ -17,4 +17,25 @@ const matchesMock = [
   },
 ];
 
-export { matchesMock };
+const inProgressMatchesMock = [
+  {
+    id: 2,
+    homeTeamId: 9,
+    homeTeamGoals: 1,
+    awayTeamId: 14,
+    awayTeamGoals: 1,
+    inProgress: true,
+  },
+];
+
+const NaNGoalsFields = [
+  { homeTeamGoals: 1, awayTeamGoals: 'a' },
+  { homeTeamGoals: 'a', awayTeamGoals: 1 },
+];
+
+const negativeGoalsFields = [
+  { homeTeamGoals: -1, awayTeamGoals: 1 },
+  { homeTeamGoals: 1, awayTeamGoals: -1 },
+];
+
+export { matchesMock, NaNGoalsFields, negativeGoalsFields, inProgressMatchesMock };
