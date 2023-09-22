@@ -2,13 +2,25 @@ import { Request, Response } from 'express';
 import MatchService from '../services/Matches.services';
 import mapStatus from './utils/mapStatus';
 
-class TeamsController {
+class MatchesController {
   private matchesService = new MatchService();
 
-  async getTeams(_req: Request, res: Response) {
+  async getMaches(req: Request, res: Response) {
+    const { inProgress } = req.query;
+    if (inProgress) return this.getMatchesByProgress(req, res);
     const { status, data } = await this.matchesService.getAllMatches();
+    return res.status(mapStatus(status)).json(data);
+  }
+
+  async getMatchesByProgress(req: Request, res: Response) {
+    const { inProgress } = req.query;
+    if (inProgress !== 'true' && inProgress !== 'false') {
+      return res.status(400).json({ message: 'Invalid query parameter' });
+    }
+    const parsedInProgress = JSON.parse(inProgress as string);
+    const { status, data } = await this.matchesService.getMatchesByProgress(parsedInProgress);
     return res.status(mapStatus(status)).json(data);
   }
 }
 
-export default TeamsController;
+export default MatchesController;

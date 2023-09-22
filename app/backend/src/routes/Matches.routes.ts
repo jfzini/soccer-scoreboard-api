@@ -6,6 +6,6 @@ const MatchesRouter = express.Router();
 const matchesController = new MatchController();
 
 MatchesRouter.get('/', (req: express.Request, res: express.Response) =>
-  matchesController.getTeams(req, res));
+  matchesController.getMaches(req, res));
 
 export default MatchesRouter;
