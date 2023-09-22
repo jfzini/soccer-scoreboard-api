@@ -38,4 +38,14 @@ const negativeGoalsFields = [
   { homeTeamGoals: 1, awayTeamGoals: -1 },
 ];
 
-export { matchesMock, NaNGoalsFields, negativeGoalsFields, inProgressMatchesMock };
+const missingCreateMatchFields = [
+  { homeTeamId: 1 },
+  { awayTeamId: 1 },
+  { homeTeamId: 1, awayTeamId: 2 },
+  { homeTeamId: 1, awayTeamId: 2, homeTeamGoals: 1 },
+  { homeTeamId: 1, awayTeamId: 2, awayTeamGoals: 1 },
+  { awayTeamId: 1, homeTeamGoals: 1, awayTeamGoals: 1 },
+  { homeTeamId: 1, homeTeamGoals: 1, awayTeamGoals: 1 },
+];
+
+export { matchesMock, NaNGoalsFields, negativeGoalsFields, inProgressMatchesMock, missingCreateMatchFields };

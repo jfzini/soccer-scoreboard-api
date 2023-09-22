@@ -4,7 +4,14 @@ import * as chai from 'chai';
 import chaiHttp = require('chai-http');
 import { app } from '../app';
 import MatchModel from '../database/models/MatchModel';
-import { NaNGoalsFields, inProgressMatchesMock, matchesMock, negativeGoalsFields } from './mocks/matches.mocks';
+import TeamModel from '../database/models/TeamModel';
+import {
+  NaNGoalsFields,
+  inProgressMatchesMock,
+  matchesMock,
+  missingCreateMatchFields,
+  negativeGoalsFields,
+} from './mocks/matches.mocks';
 import Token from '../auth/Token';
 import { mockValidUser } from './mocks/user.mocks';
 
@@ -40,6 +47,14 @@ describe('Route /matches', function () {
 
       expect(response.status).to.be.equal(200);
       expect(response.body).to.deep.equal(inProgressMatchesMock);
+    });
+
+    it('should return status 400 if query parameter is invalid', async function () {
+      sinon.stub(MatchModel, 'findAll').resolves(MatchModel.bulkBuild(inProgressMatchesMock));
+      const response = await chai.request(app).get('/matches?inProgress=invalidparameter');
+
+      expect(response.status).to.be.equal(400);
+      expect(response.body).to.deep.equal({ message: 'Invalid query parameter' });
     });
   });
 
@@ -200,6 +215,120 @@ describe('Route /matches', function () {
       });
 
       await Promise.all(promises);
+    });
+  });
+
+  describe('POST /matches', function () {
+    afterEach(function () {
+      sinon.restore();
+    });
+
+    it('should return status 201 when creating a match', async function () {
+      sinon.stub(MatchModel, 'create').resolves(MatchModel.build(matchesMock[1]));
+
+      const token = new Token().generateToken(mockValidUser);
+      const response = await chai
+        .request(app)
+        .post('/matches')
+        .set('Authorization', `Bearer ${token}`)
+        .send({ homeTeamId: 9, homeTeamGoals: 1, awayTeamId: 14, awayTeamGoals: 1 });
+
+      expect(response.status).to.be.equal(201);
+      expect(response.body).to.deep.equal(matchesMock[1]);
+    });
+
+    it('should return status 201 when creating a match', async function () {
+      sinon.stub(MatchModel, 'create').resolves(MatchModel.build(matchesMock[1]));
+      sinon.stub(TeamModel, 'findByPk').resolves(TeamModel.build({ id: 9, teamName: 'Team A' }));
+
+      const token = new Token().generateToken(mockValidUser);
+      const response = await chai
+        .request(app)
+        .post('/matches')
+        .set('Authorization', `Bearer ${token}`)
+        .send({ homeTeamId: 9, homeTeamGoals: 1, awayTeamId: 14, awayTeamGoals: 1 });
+
+      expect(response.status).to.be.equal(201);
+      expect(response.body).to.deep.equal(matchesMock[1]);
+    });
+
+    it("should return status 404 when there isn't a team with the given id", async function () {
+      sinon.stub(MatchModel, 'create').resolves(MatchModel.build(matchesMock[1]));
+      sinon.stub(TeamModel, 'findByPk').resolves(null);
+
+      const token = new Token().generateToken(mockValidUser);
+      const response = await chai
+        .request(app)
+        .post('/matches')
+        .set('Authorization', `Bearer ${token}`)
+        .send({ homeTeamId: 9, homeTeamGoals: 1, awayTeamId: 14, awayTeamGoals: 1 });
+
+      expect(response.status).to.be.equal(404);
+      expect(response.body).to.deep.equal({ message: 'There is no team with such id!' });
+    });
+
+    it('should return status 400 when missing a field', async function () {
+      sinon.stub(MatchModel, 'create').resolves(MatchModel.build(matchesMock[1]));
+      sinon.stub(TeamModel, 'findByPk').resolves(TeamModel.build({ id: 9, teamName: 'Team A' }));
+
+      const promises = missingCreateMatchFields.map(async (body) => {
+        const token = new Token().generateToken(mockValidUser);
+        const response = await chai
+          .request(app)
+          .post('/matches')
+          .set('Authorization', `Bearer ${token}`)
+          .send(body);
+
+        expect(response.status).to.be.equal(400);
+        expect(response.body).to.deep.equal({ message: 'Missing fields' });
+      });
+
+      await Promise.all(promises);
+    });
+
+    it('should return status 400 when team ids are not numbers', async function () {
+      sinon.stub(MatchModel, 'create').resolves(MatchModel.build(matchesMock[1]));
+      sinon.stub(TeamModel, 'findByPk').resolves(TeamModel.build({ id: 9, teamName: 'Team A' }));
+
+      const token = new Token().generateToken(mockValidUser);
+      const response = await chai
+        .request(app)
+        .post('/matches')
+        .set('Authorization', `Bearer ${token}`)
+        .send({ homeTeamId: 'a', homeTeamGoals: 1, awayTeamId: 14, awayTeamGoals: 1 });
+
+      expect(response.status).to.be.equal(400);
+      expect(response.body).to.deep.equal({ message: 'Team ids must be numbers' });
+    });
+
+    it('should return status 422 when team ids are equal', async function () {
+      sinon.stub(MatchModel, 'create').resolves(MatchModel.build(matchesMock[1]));
+      sinon.stub(TeamModel, 'findByPk').resolves(TeamModel.build({ id: 9, teamName: 'Team A' }));
+
+      const token = new Token().generateToken(mockValidUser);
+      const response = await chai
+        .request(app)
+        .post('/matches')
+        .set('Authorization', `Bearer ${token}`)
+        .send({ homeTeamId: 14, homeTeamGoals: 1, awayTeamId: 14, awayTeamGoals: 1 });
+
+      expect(response.status).to.be.equal(422);
+      expect(response.body).to.deep.equal({ message: 'It is not possible to create a match with two equal teams' });
+    });
+
+    it('should return status 400 when team ids are negative', async function () {
+      sinon.stub(MatchModel, 'create').resolves(MatchModel.build(matchesMock[1]));
+      sinon.stub(TeamModel, 'findByPk').resolves(TeamModel.build({ id: 9, teamName: 'Team A' }));
+
+      const token = new Token().generateToken(mockValidUser);
+      const response = await chai
+        .request(app)
+        .post('/matches')
+        .set('Authorization', `Bearer ${token}`)
+        .send({ homeTeamId: -14, homeTeamGoals: 1, awayTeamId: 14, awayTeamGoals: 1 });
+
+      expect(response.status).to.be.equal(400);
+      expect(response.body).to.deep.equal({ message: 'Team ids cannot be negative' });
     });
   });
 });

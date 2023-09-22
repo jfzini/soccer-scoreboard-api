@@ -16,7 +16,7 @@ class MatchesService {
           attributes: ['teamName'],
         },
       ],
-    });
+    });    
 
     return { status: 'SUCCESSFUL', data };
   }
