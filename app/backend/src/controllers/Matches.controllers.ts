@@ -47,7 +47,7 @@ class MatchesController {
     const foundTeamB = await this.teamService.getTeamById(parseInt(awayTeamId, 10));
     const foundTeams = [foundTeamA, foundTeamB];
     const invalidTeam = foundTeams.some((team) => team.status !== 'SUCCESSFUL');
-    if (invalidTeam) return res.status(400).json({ message: 'One or more teams\' id are invalid' });
+    if (invalidTeam) return res.status(404).json({ message: 'There is no team with such id!' });
 
     const { status, data } = await this.matchesService.createMatch(
       parseInt(homeTeamId, 10),

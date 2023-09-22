@@ -29,7 +29,9 @@ const validateCreateMatchFields = (req: Request, res: Response, next: NextFuncti
     return res.status(400).json({ message: 'Team ids must be numbers' });
   }
   if (homeTeamId === awayTeamId) {
-    return res.status(400).json({ message: 'Team ids must be different' });
+    return res
+      .status(422)
+      .json({ message: 'It is not possible to create a match with two equal teams' });
   }
   if (homeTeamId < 0 || awayTeamId < 0) {
     return res.status(400).json({ message: 'Team ids cannot be negative' });
