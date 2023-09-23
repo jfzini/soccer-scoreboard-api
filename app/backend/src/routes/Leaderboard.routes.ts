@@ -6,9 +6,12 @@ const LeaderboardRouter = express.Router();
 
 const leaderboardController = new LeaderboardController();
 
-LeaderboardRouter.get('/home', (req: Request, res: Response) =>
+LeaderboardRouter.get('/', (req: Request, res: Response) =>
   leaderboardController.getAllMatchesData(req, res));
 
+LeaderboardRouter.get('/home', (req: Request, res: Response) =>
+  leaderboardController.getHomeOrAwayMatchesData(req, res));
+
 LeaderboardRouter.get('/away', (req: Request, res: Response) =>
-  leaderboardController.getAllMatchesData(req, res));
+  leaderboardController.getHomeOrAwayMatchesData(req, res));
 export default LeaderboardRouter;

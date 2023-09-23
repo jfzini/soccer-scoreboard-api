@@ -55,6 +55,25 @@ class LeaderBoardUtils implements ILeaderboard {
   private calculateEfficiency(): void {
     this.efficiency = ((this.totalPoints / (this.totalGames * 3)) * 100).toFixed(2);
   }
+
+  public static mapMatchesData(awayData: LeaderBoardUtils[], team: LeaderBoardUtils) {
+    const awayTeam = awayData.find((away) => away.name === team.name);
+    if (!awayTeam) return team;
+    const totalPoints = team.totalPoints + awayTeam.totalPoints;
+    const totalGames = team.totalGames + awayTeam.totalGames;
+    return {
+      name: team.name,
+      totalPoints,
+      totalGames,
+      totalVictories: team.totalVictories + awayTeam.totalVictories,
+      totalDraws: team.totalDraws + awayTeam.totalDraws,
+      totalLosses: team.totalLosses + awayTeam.totalLosses,
+      goalsFavor: team.goalsFavor + awayTeam.goalsFavor,
+      goalsOwn: team.goalsOwn + awayTeam.goalsOwn,
+      goalsBalance: team.goalsBalance + awayTeam.goalsBalance,
+      efficiency: ((totalPoints / (totalGames * 3)) * 100).toFixed(2),
+    };
+  }
 }
 
 export default LeaderBoardUtils;
