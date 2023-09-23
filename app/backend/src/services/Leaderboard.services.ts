@@ -12,17 +12,11 @@ class LeaderBoardService {
 
     const parsedData = rawData.map((team) => new LeaderBoardUtils(team.toJSON()));
 
-    parsedData.sort((a, b) => {
-      if (a.totalPoints > b.totalPoints) return -1;
-      if (a.totalPoints < b.totalPoints) return 1;
-      if (a.totalVictories > b.totalVictories) return -1;
-      if (a.totalVictories < b.totalVictories) return 1;
-      if (a.goalsBalance > b.goalsBalance) return -1;
-      if (a.goalsBalance < b.goalsBalance) return 1;
-      if (a.goalsFavor > b.goalsFavor) return -1;
-      if (a.goalsFavor < b.goalsFavor) return 1;
-      return 0;
-    });
+    parsedData
+      .sort((a, b) => b.goalsFavor - a.goalsFavor)
+      .sort((a, b) => b.goalsBalance - a.goalsBalance)
+      .sort((a, b) => b.totalVictories - a.totalVictories)
+      .sort((a, b) => b.totalPoints - a.totalPoints);
 
     return { status: 'SUCCESSFUL', data: parsedData };
   }
