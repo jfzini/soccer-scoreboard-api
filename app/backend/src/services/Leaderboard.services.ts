@@ -9,7 +9,7 @@ class LeaderBoardService {
     const rawData = await this.teamModel.findAll({
       include: [{ association: `${path}Match`, where: { inProgress: false } }],
     });
-    
+
     const parsedData = rawData.map((team) => new LeaderBoardUtils(team.toJSON()));
 
     parsedData.sort((a, b) => {
