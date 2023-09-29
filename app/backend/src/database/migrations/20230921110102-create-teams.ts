@@ -13,6 +13,7 @@ export default {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
+        onDelete: 'CASCADE',
       },
       team_name: {
         type: DataTypes.STRING,
