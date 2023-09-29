@@ -1,17 +1,13 @@
 import * as express from 'express';
-import TeamsRouter from './routes/Teams.routes';
-import LoginRouter from './routes/Login.routes';
-import MatchesRouter from './routes/Matches.routes';
-import LeaderboardRouter from './routes/Leaderboard.routes';
+import router from './routes';
 
 class App {
   public app: express.Express;
 
   constructor() {
     this.app = express();
-
     this.config();
-
+    this.routes();
     // Não remover essa rota
     this.app.get('/', (req, res) => res.json({ ok: true }));
   }
@@ -26,12 +22,12 @@ class App {
 
     this.app.use(express.json());
     this.app.use(accessControl);
-
-    this.app.use('/teams', TeamsRouter);
-    this.app.use('/login', LoginRouter);
-    this.app.use('/matches', MatchesRouter);
-    this.app.use('/leaderboard', LeaderboardRouter);
   }
+
+  private routes(): void {
+    this.app.use(router);
+  }
+
 
   public start(PORT: string | number): void {
     this.app.listen(PORT, () => console.log(`Running on port ${PORT}`));
