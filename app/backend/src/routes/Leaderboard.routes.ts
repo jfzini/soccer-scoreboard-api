@@ -14,4 +14,5 @@ LeaderboardRouter.get('/home', (req: Request, res: Response) =>
 
 LeaderboardRouter.get('/away', (req: Request, res: Response) =>
   leaderboardController.getHomeOrAwayMatchesData(req, res));
+  
 export default LeaderboardRouter;
