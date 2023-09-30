@@ -45,7 +45,6 @@ services:
       - 3306:3306
     environment:
       - MYSQL_ROOT_PASSWORD=123456
-    restart: 'always'
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"] # Deve aguardar o banco ficar operacional
       timeout: 10s
