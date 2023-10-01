@@ -76,7 +76,7 @@ const LeaderboardTable = ({ currentFilter }) => {
             index) => (
               <tr key={ uuidv4() }>
                 <td
-                  className="score-board-classification"
+                  className={`score-board-classification score-board-classification-${index + 1}`}
                   data-testid={ `score_boarding__classification_${index + 1}` }
                 >
                   {`${index + 1}`}

@@ -37,6 +37,18 @@
   text-align: center;
 }
 
+.score-board-classification-1 {
+  background-color: goldenrod;
+}
+
+.score-board-classification-2 {
+  background-color: rgb(0, 224, 112);
+}
+
+.score-board-classification-3 {
+  background-color: rgb(0, 150, 100);
+}
+
 .score-board-team-name {
   background: #036b52;
   border-radius: 8px;
