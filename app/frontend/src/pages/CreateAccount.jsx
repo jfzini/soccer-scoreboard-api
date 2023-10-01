@@ -7,18 +7,19 @@ import { requestLogin, setToken, requestData } from '../services/requests';
 import { positiveLogo } from '../images';
 import '../styles/pages/login.css';
 
-const Login = () => {
+const CreateAccount = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('');
+  const [role, setRole] = useState('');
   const [isLogged, setIsLogged] = useState(false);
-  const [failedTryLogin, setFailedTryLogin] = useState(false);
   const navigate = useNavigate();
 
-  const login = async (event) => {
+  const createAccount = async (event) => {
     event.preventDefault();
 
     try {
-      const { token } = await requestLogin('/login', { email, password });
+      const { token } = await requestLogin('/login/create', { email, password, username });
 
       setToken(token);
 
@@ -27,23 +28,20 @@ const Login = () => {
       localStorage.setItem('token',  token);
       localStorage.setItem('role',  role);
 
+      setRole(role);
       setIsLogged(true);
     } catch (error) {
-      setFailedTryLogin(true);
-      setIsLogged(false);
+      console.log(error);
     }
   };
 
-  useEffect(() => {
-    setFailedTryLogin(false);
-  }, [email, password]);
-
-  if (isLogged) return <Navigate to="/matches" />;
-
   return (
     <>
+      {
+        isLogged && <Navigate to="/leaderboard" />
+      }
       <Header
-        page="LOGIN"
+        page="CRIE SUA CONTA"
         FirstNavigationLink={ LeaderboardBtn }
         SecondNavegationLink={ MatchesBtn }
       />
@@ -51,6 +49,15 @@ const Login = () => {
         <img src={ positiveLogo } alt="Trybe Futebol Clube Negative Logo" />
         <form>
           <h1>Área do usuário</h1>
+          <label htmlFor="username-input">
+            <input
+              type="text"
+              value={ username }
+              onChange={ ({ target: { value } }) => setUsername(value) }
+              data-testid="login__username_input"
+              placeholder="Nome de usuário"
+            />
+          </label>
           <label htmlFor="email-input">
             <input
               className="login__login_input"
@@ -58,7 +65,7 @@ const Login = () => {
               value={ email }
               onChange={ ({ target: { value } }) => setEmail(value) }
               data-testid="login__login_input"
-              placeholder="Login"
+              placeholder="E-mail"
             />
           </label>
           <label htmlFor="password-input">
@@ -70,27 +77,12 @@ const Login = () => {
               placeholder="Senha"
             />
           </label>
-          {
-            (failedTryLogin)
-              ? (
-                <p data-testid="login__input_invalid_login_alert">
-                  {
-                    `O endereço de e-mail ou a senha não estão corretos.
-                    Por favor, tente novamente.`
-                  }
-                </p>
-              )
-              : null
-          }
           <button
             data-testid="login__login_btn"
             type="submit"
-            onClick={ (event) => login(event) }
+            onClick={ (event) => createAccount(event) }
           >
-            Entrar
-          </button>
-          <button type="button" className='create-account-button' onClick={() => navigate('/logon')}>
-            Crie sua conta
+            Criar conta
           </button>
         </form>
       </section>
@@ -98,4 +90,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default CreateAccount;

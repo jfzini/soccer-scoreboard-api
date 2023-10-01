@@ -17,6 +17,13 @@ LoginRouter.post(
   (req: Request, res: Response) => userController.loginUser(req, res),
 );
 
+LoginRouter.post(
+  '/create',
+  middlewares.validateEmailFormat,
+  middlewares.validatePasswordFormat,
+  (req: Request, res: Response) => userController.createUser(req, res),
+);
+
 LoginRouter.get('/role', tokenMiddleware, (req: Request, res: Response) =>
   UserController.getRole(req, res));
 

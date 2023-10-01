@@ -6,6 +6,8 @@ services:
     ports:
       - 3000:3000
     working_dir: /app-frontend
+    volumes:
+      - ./frontend/src:/app-frontend/src
     # Os `healthcheck` devem garantir que a aplicação
     # está operacional, antes de liberar o container
     healthcheck:

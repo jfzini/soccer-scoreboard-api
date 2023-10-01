@@ -5,6 +5,7 @@ import Leaderboard from './pages/Leaderboard';
 import Games from './pages/Games';
 import Login from './pages/Login';
 import './styles/app.css';
+import CreateAccount from './pages/CreateAccount';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Route path="/leaderboard" element={ <Leaderboard /> } />
       <Route path="/matches" element={ <Games /> } />
       <Route path="/login" element={ <Login /> } />
+      <Route path="/logon" element={ <CreateAccount /> } />
       <Route exact path="/" element={ <Navigate to="/leaderboard" /> } />
     </Routes>
   );

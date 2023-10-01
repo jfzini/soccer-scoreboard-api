@@ -22,6 +22,19 @@ class UserService {
     const token = this.token.generateToken(rest);
     return { status: 'SUCCESSFUL', data: { token } };
   }
+
+  public async createUser(user: any): Promise<IServiceResponse<UserModel>> {
+    const foundUser = await this.userModel.findOne({ where: { email: user.email } });
+    if (foundUser) {
+      return { status: 'BAD_REQUEST', data: { message: 'User already exists' } };
+    }
+    const { password, ...rest } = user;
+    const hashedPassword = bcrypt.hashSync(password, 8);
+    const { dataValues } = await this.userModel.create({ ...rest, password: hashedPassword });
+    const { password: hashedPassword2, ...rest2 } = dataValues;
+    const token = this.token.generateToken(rest2);
+    return { status: 'SUCCESSFUL', data: { token } };
+  }
 }
 
 export default UserService;
