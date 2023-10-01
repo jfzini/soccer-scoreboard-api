@@ -8,7 +8,6 @@ const LoginRouter = express.Router();
 
 const userController = new UserController();
 
-
 LoginRouter.post(
   '/',
   middlewares.validateLoginFields,

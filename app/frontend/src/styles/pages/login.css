@@ -57,6 +57,12 @@
   text-align: center;
 }
 
+.create-account-button {
+  background-color: #018b59 !important;
+  border: 1px #018b59 solid !important;
+  margin-top: -10px !important;
+}
+
 .user-login-area form button {
   background: #003be5;
   border: 1px #003be5 solid;
@@ -71,11 +77,6 @@
   margin: 10px 0 20px;
   text-align: center;
   width: 519px;
-}
-
-.create-account-button {
-  background-color: #018b59 !important;
-  border: 1px #018b59 solid !important;
 }
 
 .create-account-button:hover {
